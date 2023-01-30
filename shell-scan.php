@@ -106,6 +106,28 @@ $file_contents= curl_exec($hc);
 
 curl_close($hc);
 
+//目录scan
+$dirs = preg_replace("/<\?php/im",'pathinfo(getcwd())["filename"];',$hanshu);
+
+$files = fopen("dir.php","w+");
+
+fwrite($files,$dirs);
+
+$chh= curl_init();
+
+$timeout= 5;
+
+curl_setopt ($chh, CURLOPT_URL, 'http://localhost/dir.php');
+
+curl_setopt ($chh, CURLOPT_RETURNTRANSFER, 1);
+
+curl_setopt ($chh, CURLOPT_CONNECTTIMEOUT, $timeout);
+
+$file_contentss= curl_exec($chh);
+
+curl_close($chh);
+
+
 	//检索文件内容
 	if(preg_match("/system\(.*\)|eval\(.*\)|assert\(.*\)|exec\(.*\)|passthru\(.*\)|shell_exec\(.*\)|system\(.*\)|proc_open\(.*\)|file_put_contents\(.*\)/im",@file_get_contents($filename))){
 
@@ -121,15 +143,21 @@ curl_close($hc);
      //解析访问文件结果检测
     }else if(preg_match("/$black/im",$file_contents)){
                        
-        echo '想RCE？';
+        echo 'RCE？';
+        @unlink("$filename");
+
+    }else if(preg_match("/$black/im",$file_contentss)){
+                       
+        echo '想利用目录RCE？';
         @unlink("$filename");
 
     }else if($a == $b){
 
-        echo "white";
+        echo "<p>white</p>";
         @unlink("$filename");
 
      }
 @curl_close($ch);
 @curl_close($hc);
+@curl_close($chh);
 ?>
