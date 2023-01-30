@@ -155,6 +155,7 @@ curl_close($chh);
         echo '想利用目录RCE？';
         @unlink("$filename");
 
+    //传参强检 | 禁止闭合此类型"($),{$}"
     }else if(preg_match("/$request/im",$hanshu)){
                        
         echo '传参RCE？';
