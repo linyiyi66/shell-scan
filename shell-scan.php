@@ -39,7 +39,6 @@ $file_contents= curl_exec($hc);
 curl_close($hc);
 $g = '(\$_.*){2}';
 
-// foreach()
 	//黑名单检测
 	if(preg_match("/$black/im",@file_get_contents($lynn))){
 
