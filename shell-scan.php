@@ -15,22 +15,28 @@ $dir = pathinfo(getcwd())["basename"];
 
 @$file = @$_FILES["file"]["name"];
 
-$hanshu1 = preg_replace("/<\?php/",'<?php print_r(',file_get_contents($lynn));
-
+//请求解析内容
+$hanshu =  @file_get_contents($lynn);
+$hanshu1 = preg_replace("/<\?php/",'<?php print_r(',@file_get_contents($hanshu));
 $hanshu2 = preg_replace("/;/",");",$hanshu1);
-
 $files = fopen("lynn.php","w+");
-
 fwrite($files,$hanshu2);
-
 $ch= curl_init();
 $timeout= 5;
 curl_setopt ($ch, CURLOPT_URL, 'http://localhost/lynn.php/');
 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-$file_contents= curl_exec($ch);
+$file_content= curl_exec($ch);
 curl_close($ch);
 
+//请求解析结果
+$hc= curl_init();
+$timeout= 5;
+curl_setopt ($hc, CURLOPT_URL, "http://localhost/$lynn");
+curl_setopt ($hc, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt ($hc, CURLOPT_CONNECTTIMEOUT, $timeout);
+$file_contents= curl_exec($hc);
+curl_close($hc);
 $g = '(\$_.*){2}';
 
 // foreach()
@@ -53,7 +59,7 @@ $g = '(\$_.*){2}';
 		@unlink("$lynn"); 
 
 	//检测解析后关键字
-	}else if(preg_match("/eval\(\)|assert\(\)|exec\(\)|passthru\(\)|shell_exec\(\)|system\(\)|proc_open\(\)|file_put_contents\(\)/im",exec("curl http://localhost/$lynn"))){               
+	}else if(preg_match("/eval\(\)|assert\(\)|exec\(\)|passthru\(\)|shell_exec\(\)|system\(\)|proc_open\(\)|file_put_contents\(\)/im",$file_contents)){               
 		echo 'RCE的shell？';
 		@unlink($lynn);
 
@@ -68,7 +74,8 @@ $g = '(\$_.*){2}';
                        
 		echo '想通过文件名RCE？';
 		@unlink($lynn);
-    }else if(preg_match("/system/im",$file_contents)){
+
+    }else if(preg_match("/system/im",$file_content)){
                        
 		echo '想通过函数内容RCE？';
 		@unlink("lynn.php");
