@@ -106,7 +106,8 @@ $file_contents= curl_exec($hc);
 
 curl_close($hc);
 
-if(preg_match("/system\(.*\)|eval\(.*\)|assert\(.*\)|exec\(.*\)|passthru\(.*\)|shell_exec\(.*\)|system\(.*\)|proc_open\(.*\)|file_put_contents\(.*\)/im",@file_get_contents($filename))){
+	//检索文件内容
+	if(preg_match("/system\(.*\)|eval\(.*\)|assert\(.*\)|exec\(.*\)|passthru\(.*\)|shell_exec\(.*\)|system\(.*\)|proc_open\(.*\)|file_put_contents\(.*\)/im",@file_get_contents($filename))){
 
         echo("不变形一下？");
         @unlink("$filename"); 
