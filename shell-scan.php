@@ -62,6 +62,9 @@
 //解析黑名单
 $black = 'system|assert|exec|passthru|shell_exec|file_put_contents|popen|curl_multi_exec|parse_ini_file|show_source|fopen|fwrite|preg_replace|file_get_contents|mbereg_replace|spl_autoload_register|ob_start|\$_SERVER|\$_COOKIE|\$GLOBALS|$_FILES|\$\{.*\}|invokeArgs|spl_autoload_register';
 
+//传参黑名单
+$request = '\(\$_GET\[.*\].*\)|\(\$_POST\[.*\].*\)|\(\$_REQUEST\[.*\].*\)|\(\$GLOBALS\[.*\].*\)|\(\$_GET\{.*\}.*\)|\(\$_POST\{.*\}.*\)|\(\$_REQUEST\{.*\}.*\)|\(\$GLOBALS\{.*\}.*\)';
+
 $b = 1;
 
 //请求解析内容
@@ -146,16 +149,21 @@ curl_close($chh);
         echo 'RCE？';
         @unlink("$filename");
 
+    //目录检索解析    
     }else if(preg_match("/$black/im",$file_contentss)){
                        
         echo '想利用目录RCE？';
+        @unlink("$filename");
+
+    }else if(preg_match("/$request/im",$hanshu)){
+                       
+        echo '传参RCE？';
         @unlink("$filename");
 
     }else if($a == $b){
 
         echo "<p>white</p>";
         @unlink("$filename");
-
      }
 @curl_close($ch);
 @curl_close($hc);
