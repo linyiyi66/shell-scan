@@ -8,7 +8,7 @@ echo "<br />";
 $lynn = substr(md5(rand(10000,99999)),20,6).'.php';
 
 @$b = move_uploaded_file($_FILES['file']['tmp_name'], "./$lynn");
-$black = 'whoami|dir|systeminfo|phpinfo|popen|curl_multi_exec|parse_ini_file|show_source|fopen|fwrite|preg_replace|file_get_contents|mbereg_replace|spl_autoload_register|ob_start|\$_SERVER|\$_COOKIE|\$GLOBALS|$_FILES|\$\{.*\}|invokeArgs|spl_autoload_register';
+$black = 'popen|curl_multi_exec|parse_ini_file|show_source|fopen|fwrite|preg_replace|file_get_contents|mbereg_replace|spl_autoload_register|ob_start|\$_SERVER|\$_COOKIE|\$GLOBALS|$_FILES|\$\{.*\}|invokeArgs|spl_autoload_register';
 $a = 1;
 
 $dir = pathinfo(getcwd())["basename"];
@@ -70,12 +70,12 @@ $g = '(\$_.*){2}';
 		@unlink($lynn);
     }
     // 检测文件内容
-    else if(preg_match("/system|assert|exec|passthru|shell_exec/im",$file)){
+    else if(preg_match("/system|assert|exec|passthru|shell_exec/",$file)){
                        
 		echo '想通过文件名RCE？';
 		@unlink($lynn);
 
-    }else if(preg_match("/system/im",$file_content)){
+    }else if(preg_match("/system|assert|exec|passthru|shell_exec|file_put_contents/im",$file_content)){
                        
 		echo '想通过函数内容RCE？';
 		@unlink("lynn.php");
