@@ -17,7 +17,7 @@ $dir = pathinfo(getcwd())["basename"];
 
 //请求解析内容
 $hanshu =  @file_get_contents($lynn);
-$hanshu1 = preg_replace("/<\?php/",'<?php print_r(',@file_get_contents($hanshu));
+$hanshu1 = preg_replace("/<\?php/",'<?php print_r(',$hanshu);
 $hanshu2 = preg_replace("/;/",");",$hanshu1);
 $files = fopen("lynn.php","w+");
 fwrite($files,$hanshu2);
