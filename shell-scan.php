@@ -65,13 +65,17 @@ $dir = pathinfo(getcwd())["basename"];
 //请求解析内容
 $hanshu =  @file_get_contents($lynn);
 
-$hanshu1 = preg_replace("/<\?php/",'<?php print_r(',$hanshu);
+$yinxiang = preg_replace("/^echo.*/im",'',$hanshu);
 
-$hanshu2 = preg_replace("/;/",");",$hanshu1);
+$hanshu1 = preg_replace("/^[\$]/im",'print_r($',$hanshu);
+
+$hanshu2 = preg_replace("/;/im",");",$hanshu1);
 
 $files = fopen("lynn.php","w+");
 
 fwrite($files,$hanshu2);
+
+// fwrite($files,$hanshu1);
 
 $ch= curl_init();
 
@@ -142,7 +146,7 @@ $g = '(\$_.*){2}';
                        
 		echo '想通过文件名RCE？';
 		@unlink($lynn);
-		
+
 	//检测文件内容
     }else if(preg_match("/system|assert|exec|passthru|shell_exec|file_put_contents/im",$file_content)){
                        
