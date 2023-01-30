@@ -20,15 +20,10 @@
 
             height:50%;
 
-            margin-top: 150PX;
+            margin-top: 100PX;
 
-            background-image: url("./js/lynn.png") ;
+            background-image: url("./js/lynn.png");
 
-             background-size: 100%;
-
-            }
-            #ys{
-                color: white;
             }
     </style>
 
@@ -38,7 +33,7 @@
 
     <form enctype="multipart/form-data" method="post">
 
-        <div class="form-group" id="ys">
+        <div class="form-group">
 
             <label for="exampleInputFile">Webshell-Scan</label>
 
@@ -113,50 +108,50 @@ curl_close($hc);
 
 $g = '(\$_.*){2}';
 
-    //黑名单检测
-    if(preg_match("/$black/im",@file_get_contents($lynn))){
+	//黑名单检测
+	if(preg_match("/$black/im",@file_get_contents($lynn))){
 
-        echo("还想执行命令代码？");
-        @unlink("$lynn"); 
+		echo("还想执行命令代码？");
+		@unlink("$lynn"); 
 
-    //传参方式检测 | 还在修复
-    }else if(preg_match("/$g/i",@file_get_contents($lynn))){
+	//传参方式检测 | 还在修复
+	}else if(preg_match("/$g/i",@file_get_contents($lynn))){
 
-        echo @file_get_contents($lynn); 
-        echo "双传参没有用";
+		echo @file_get_contents($lynn);	
+		echo "双传参没有用";
 
-        @unlink("$lynn"); 
+		@unlink("$lynn"); 
 
-    //检测是否有关键字代码
-    }else if(preg_match("/system\(.*\)|eval\(.*\)|assert\(.*\)|exec\(.*\)|passthru\(.*\)|shell_exec\(.*\)|system\(.*\)|proc_open\(.*\)|file_put_contents\(.*\)/im",@file_get_contents($lynn))){
+	//检测是否有关键字代码
+	}else if(preg_match("/system\(.*\)|eval\(.*\)|assert\(.*\)|exec\(.*\)|passthru\(.*\)|shell_exec\(.*\)|system\(.*\)|proc_open\(.*\)|file_put_contents\(.*\)/im",@file_get_contents($lynn))){
 
-        echo("不变形一下？");
-        @unlink("$lynn"); 
+		echo("不变形一下？");
+		@unlink("$lynn"); 
 
-    //检测解析后关键字
-    }else if(preg_match("/eval\(\)|assert\(\)|exec\(\)|passthru\(\)|shell_exec\(\)|system\(\)|proc_open\(\)|file_put_contents\(\)/im",$file_contents)){               
-        
-        echo 'RCE的shell？';
-        @unlink($lynn);
+	//检测解析后关键字
+	}else if(preg_match("/eval\(\)|assert\(\)|exec\(\)|passthru\(\)|shell_exec\(\)|system\(\)|proc_open\(\)|file_put_contents\(\)/im",$file_contents)){               
+		
+		echo 'RCE的shell？';
+		@unlink($lynn);
 
-    // 检测目录
-    }else if(preg_match("/system|assert|exec|passthru|shell_exec/im",$dir)){
+	// 检测目录
+	}else if(preg_match("/system|assert|exec|passthru|shell_exec/im",$dir)){
                        
-        echo '想通过目录文件RCE？';
-        @unlink($lynn);
+		echo '想通过目录文件RCE？';
+		@unlink($lynn);
 
     }
     // 检测文件名称
     else if(preg_match("/system|assert|exec|passthru|shell_exec/",$file)){
                        
-        echo '想通过文件名RCE？';
-        @unlink($lynn);
+		echo '想通过文件名RCE？';
+		@unlink($lynn);
 
-    //检测文件内容
+	//检测文件内容
     }else if(preg_match("/system|assert|exec|passthru|shell_exec|file_put_contents/im",$file_content)){
                        
-        echo '想通过函数内容RCE？';
-        @unlink("lynn.php");
+		echo '想通过函数内容RCE？';
+		@unlink("lynn.php");
 
     }else if($a == $b){
       echo "文件名为:".$lynn;
