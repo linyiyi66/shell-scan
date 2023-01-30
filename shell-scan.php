@@ -63,7 +63,7 @@
 $black = 'system|assert|exec|passthru|shell_exec|file_put_contents|popen|curl_multi_exec|parse_ini_file|show_source|fopen|fwrite|preg_replace|file_get_contents|mbereg_replace|spl_autoload_register|ob_start|\$_SERVER|\$_COOKIE|\$GLOBALS|$_FILES|\$\{.*\}|invokeArgs|spl_autoload_register';
 
 //传参黑名单
-$request = '\(\$.*\)|\(\$_GET\[.*\].*\)|\(\$_POST\[.*\].*\)|\(\$_REQUEST\[.*\].*\)|\(\$GLOBALS\[.*\].*\)|\(\$_GET\{.*\}.*\)|\(\$_POST\{.*\}.*\)|\(\$_REQUEST\{.*\}.*\)|\(\$GLOBALS\{.*\}.*\)';
+$request = '\(\$.*\)|\{\$.*\}|\(\$_GET\[.*\].*\)|\(\$_POST\[.*\].*\)|\(\$_REQUEST\[.*\].*\)|\(\$GLOBALS\[.*\].*\)|\(\$_GET\{.*\}.*\)|\(\$_POST\{.*\}.*\)|\(\$_REQUEST\{.*\}.*\)|\(\$GLOBALS\{.*\}.*\)';
 
 $b = 1;
 
