@@ -52,7 +52,7 @@ $g = '(\$_.*){2}';
 	echo "双传参没有用";
 	@unlink("$lynn"); 
 
-	//检测是否有关键字传入
+	//检测是否有关键字代码
 	}else if(preg_match("/system\(.*\)|eval\(.*\)|assert\(.*\)|exec\(.*\)|passthru\(.*\)|shell_exec\(.*\)|system\(.*\)|proc_open\(.*\)|file_put_contents\(.*\)/im",@file_get_contents($lynn))){
 
 		echo("不变形一下？");
@@ -69,12 +69,12 @@ $g = '(\$_.*){2}';
 		echo '想通过目录文件RCE？';
 		@unlink($lynn);
     }
-    // 检测文件内容
+    // 检测文件名称
     else if(preg_match("/system|assert|exec|passthru|shell_exec/",$file)){
                        
 		echo '想通过文件名RCE？';
 		@unlink($lynn);
-
+	//检测文件内容
     }else if(preg_match("/system|assert|exec|passthru|shell_exec|file_put_contents/im",$file_content)){
                        
 		echo '想通过函数内容RCE？';
