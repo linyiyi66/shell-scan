@@ -8,7 +8,7 @@ echo "<br />";
 $lynn = substr(md5(rand(10000,99999)),20,6).'.php';
 
 @$b = move_uploaded_file($_FILES['file']['tmp_name'], "./$lynn");
-$black = 'whoami|dir|systeminfo|phpinfo|system|assert|exec|passthru|shell_exec|popen|curl_multi_exec|parse_ini_file|show_source|fopen|fwrite|preg_replace|file_get_contents|mbereg_replace|spl_autoload_register|ob_start|\$_SERVER|\$_COOKIE|\$GLOBALS|$_FILES|\$\{.*\}|invokeArgs|spl_autoload_register';
+$black = 'whoami|dir|systeminfo|phpinfo|popen|curl_multi_exec|parse_ini_file|show_source|fopen|fwrite|preg_replace|file_get_contents|mbereg_replace|spl_autoload_register|ob_start|\$_SERVER|\$_COOKIE|\$GLOBALS|$_FILES|\$\{.*\}|invokeArgs|spl_autoload_register';
 $a = 1;
 
 $dir = pathinfo(getcwd())["basename"];
@@ -19,9 +19,9 @@ $hanshu1 = preg_replace("/<\?php/",'<?php print_r(',file_get_contents($lynn));
 
 $hanshu2 = preg_replace("/;/",");",$hanshu1);
 
-$file = fopen("lynn.php","w+");
+$files = fopen("lynn.php","w+");
 
-fwrite($file,$hanshu2);
+fwrite($files,$hanshu2);
 
 $ch= curl_init();
 $timeout= 5;
@@ -64,8 +64,11 @@ $g = '(\$_.*){2}';
 		@unlink($lynn);
     }
     // 检测文件内容
-    else 
-    	if(preg_match("/system/im",$file_contents)){
+    else if(preg_match("/system|assert|exec|passthru|shell_exec/im",$file)){
+                       
+		echo '想通过文件名RCE？';
+		@unlink($lynn);
+    }else if(preg_match("/system/im",$file_contents)){
                        
 		echo '想通过函数内容RCE？';
 		@unlink("lynn.php");
