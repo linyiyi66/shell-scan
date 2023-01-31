@@ -63,7 +63,7 @@
 $black = 'system|assert|exec|passthru|shell_exec|file_put_contents|popen|curl_multi_exec|parse_ini_file|show_source|fopen|fwrite|preg_replace|file_get_contents|mbereg_replace|spl_autoload_register|ob_start|\$_SERVER|\$_COOKIE|\$GLOBALS|$_FILES|\$\{.*\}|invokeArgs|spl_autoload_register';
 
 //传参黑名单
-$request = '\(\$.*\)|\{\$.*\}|\(\$_GET\[.*\].*\)|\(\$_POST\[.*\].*\)|\(\$_REQUEST\[.*\].*\)|\(\$GLOBALS\[.*\].*\)|\(\$_GET\{.*\}.*\)|\(\$_POST\{.*\}.*\)|\(\$_REQUEST\{.*\}.*\)|\(\$GLOBALS\{.*\}.*\)';
+$request = '\(\$_GET\[.*\].*\)|\(\$_POST\[.*\].*\)|\(\$_REQUEST\[.*\].*\)|\(\$GLOBALS\[.*\].*\)|\(\$_GET\{.*\}.*\)|\(\$_POST\{.*\}.*\)|\(\$_REQUEST\{.*\}.*\)|\(\$GLOBALS\{.*\}.*\)';
 
 $b = 1;
 
@@ -110,7 +110,7 @@ $file_contents= curl_exec($hc);
 curl_close($hc);
 
 //目录scan
-$dirs = preg_replace("/<\?php/im",'<?php echo pathinfo(getcwd())["filename"];',$hanshu);
+$dirs = preg_replace("/<\?php/im",'pathinfo(getcwd())["filename"];',$hanshu);
 
 $files = fopen("dir.php","w+");
 
@@ -131,8 +131,8 @@ $file_contentss= curl_exec($chh);
 curl_close($chh);
 
 
-	//检索文件内容
-	if(preg_match("/system\(.*\)|eval\(.*\)|assert\(.*\)|exec\(.*\)|passthru\(.*\)|shell_exec\(.*\)|system\(.*\)|proc_open\(.*\)|file_put_contents\(.*\)/im",@file_get_contents($filename))){
+    //检索文件内容
+    if(preg_match("/system\(.*\)|eval\(.*\)|assert\(.*\)|exec\(.*\)|passthru\(.*\)|shell_exec\(.*\)|system\(.*\)|proc_open\(.*\)|file_put_contents\(.*\)/im",@file_get_contents($filename))){
 
         echo("不变形一下？");
         @unlink("$filename"); 
